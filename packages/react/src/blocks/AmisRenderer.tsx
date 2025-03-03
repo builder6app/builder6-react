@@ -53,8 +53,8 @@ export class AmisRenderer extends React.Component<PropsWithChildren<AmisRenderer
       // this.amisScoped.updateSchema(this.state.schema);
     }
     else if (prevProps.data !== this.props.data) {
-      console.log(`AmisRenderer componentDidUpdate data`)
-      await this.loadSchema();
+      // console.log(`AmisRenderer componentDidUpdate data`)
+      // await this.loadSchema();
       // await this.loadData();
       // this.amisScoped.updateProps(this.state.data, () => {
       //   /*更新回调 */
