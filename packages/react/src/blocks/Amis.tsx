@@ -27,6 +27,8 @@ export class AmisComponent extends React.Component<PropsWithChildren<AmisProps>>
   ref: any = null;
   amisScoped: any = null;
 
+  _scoped = {};
+
   componentWillUnmount() {
     if (this.amisScoped) {
       this.amisScoped.unmount();
@@ -81,6 +83,7 @@ export class AmisComponent extends React.Component<PropsWithChildren<AmisProps>>
     const data = {
       ...builderState.state,
       ...this.props.data,
+      _scoped: this._scoped,
     };
     const env = {
       theme: 'antd',
@@ -97,6 +100,7 @@ export class AmisComponent extends React.Component<PropsWithChildren<AmisProps>>
     };
     console.log('render amis', this.props, data, env);
     this.amisScoped = this.amis.embed(this.ref.current, this.props.schema, {data}, env);
+    Object.assign(this._scoped, this.amisScoped);
   }
 
   async componentDidUpdate(prevProps) {
