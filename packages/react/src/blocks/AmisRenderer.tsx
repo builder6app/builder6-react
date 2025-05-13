@@ -32,10 +32,10 @@ export class AmisRenderer extends React.Component<PropsWithChildren<AmisRenderer
     }
     if (typeof schema === 'function') {
       const result = await schema(props);
-      console.log(`AmisRenderer loadSchema result`, result)
+      // console.log(`AmisRenderer loadSchema result`, result)
       this.setState({ schema: result });
     } else {
-      console.log(`AmisRenderer loadSchema schema`, schema)
+      // console.log(`AmisRenderer loadSchema schema`, schema)
       this.setState({ schema: schema });
     }
   };
