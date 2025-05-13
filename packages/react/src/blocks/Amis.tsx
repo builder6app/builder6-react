@@ -98,9 +98,9 @@ export class AmisComponent extends React.Component<PropsWithChildren<AmisProps>>
       ...context.env,
       ...this.props.env
     };
-    console.log('render amis', this.props, data, env);
+    // console.log('render amis', this.props, data, env);
     this.amisScoped = this.amis.embed(this.ref.current, this.props.schema, {data}, env, ()=>{
-      console.log('this.amisScoped', this.amisScoped)
+      // console.log('this.amisScoped', this.amisScoped)
       Object.assign(this._scoped, this.amisScoped);
     });
   }
@@ -108,11 +108,11 @@ export class AmisComponent extends React.Component<PropsWithChildren<AmisProps>>
   async componentDidUpdate(prevProps) {
     // console.log('Amis componentDidUpdate', prevProps, this.props);
     if (JSON.stringify(prevProps.schema) !== JSON.stringify(this.props.schema)) {
-      console.log(`Amis componentDidUpdate schema`, this.props.schema);
+      // console.log(`Amis componentDidUpdate schema`, this.props.schema);
       this.amisScoped.updateSchema(this.props.schema);
     }
     else if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
-      console.log(`Amis componentDidUpdate data`, this.props.data);
+      // console.log(`Amis componentDidUpdate data`, this.props.data);
       this.amisScoped.updateProps({
         data: this.props.data
       }, () => {
