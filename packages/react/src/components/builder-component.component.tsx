@@ -1162,13 +1162,13 @@ export class BuilderComponent extends React.Component<
 
                         const blocks = data?.blocks || [];
 
-                        const hasPixel = blocks.find((block: BuilderElement) =>
-                          block.id?.startsWith('builder-pixel')
-                        );
+                        // const hasPixel = blocks.find((block: BuilderElement) =>
+                        //   block.id?.startsWith('builder-pixel')
+                        // );
 
-                        if (data && !hasPixel && blocks.length > 0) {
-                          blocks.push(getBuilderPixel(builder.apiKey!));
-                        }
+                        // if (data && !hasPixel && blocks.length > 0) {
+                        //   blocks.push(getBuilderPixel(builder.apiKey!));
+                        // }
 
                         // TODO: loading option - maybe that is what the children is or component prop
                         // TODO: get rid of all these wrapper divs
