@@ -23,6 +23,7 @@ interface AmisProps {
 export class AmisComponent extends React.Component<PropsWithChildren<AmisProps>> {
   amis: any = null;
   amisLib: any = null;
+  amisRegisterMap: any = null;
 
   ref: any = null;
   amisScoped: any = null;
@@ -46,7 +47,7 @@ export class AmisComponent extends React.Component<PropsWithChildren<AmisProps>>
     Builder.components.forEach((component:any) => {
       let componentClass = component.class
       const meta = component.meta
-
+      const registerMap = this.amisRegisterMap;
       if (componentClass && meta && meta.amis && meta.amis.render && !meta.amis.isRegisterd) {
           // console.log(`Register amis component: ${meta.amis.render.type}`, meta.amis.render);
           //注册自定义组件，请参考后续对工作原理的介绍
@@ -55,10 +56,26 @@ export class AmisComponent extends React.Component<PropsWithChildren<AmisProps>>
               <AmisRenderer {...props} schema={component.class}/>
             )
           }
-          this.amisLib.Renderer({
-            autoVar: true,
-            ...meta.amis.render
-          })(componentClass);
+
+          let asset = meta.amis.render;
+          if (!registerMap[asset.usage]) {
+            console.error(
+              `自定义组件注册失败，不存在${asset.usage}自定义组件类型。`, meta
+            );
+          } else {
+            registerMap[asset.usage]({
+              autoVar: true,
+              ...meta.amis.render
+            })(componentClass);
+            // 记录当前创建的amis自定义组件
+            console.debug('注册了一个自定义amis组件:', {
+              type: asset.type,
+              weight: asset.weight,
+              component: componentClass,
+              framework: asset.framework,
+              usage: asset.usage,
+            });
+          }
           meta.amis.isRegisterd = true;
       }
     });
@@ -71,6 +88,12 @@ export class AmisComponent extends React.Component<PropsWithChildren<AmisProps>>
     }
     this.amis = Builder.isBrowser && window['amisRequire'] && window['amisRequire']('amis/embed');
     this.amisLib = (window as any)['amisRequire'] && (window as any)['amisRequire']('amis');
+
+    this.amisRegisterMap = {
+      renderer: this.amisLib.Renderer,
+      formitem: this.amisLib.FormItem,
+      options: this.amisLib.OptionsControl,
+    }
 
     if (!this.amis) {
       console.error('Amis is not loaded');
