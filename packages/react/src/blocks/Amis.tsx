@@ -67,14 +67,6 @@ export class AmisComponent extends React.Component<PropsWithChildren<AmisProps>>
               autoVar: true,
               ...meta.amis.render
             })(componentClass);
-            // 记录当前创建的amis自定义组件
-            console.debug('注册了一个自定义amis组件:', {
-              type: asset.type,
-              weight: asset.weight,
-              component: componentClass,
-              framework: asset.framework,
-              usage: asset.usage,
-            });
           }
           meta.amis.isRegisterd = true;
       }
