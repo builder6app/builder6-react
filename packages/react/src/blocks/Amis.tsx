@@ -15,6 +15,8 @@ import { AmisRenderer } from './AmisRenderer';
 interface AmisProps {
   schema: object;
   data: object;
+  locale: String;
+  props: object;
   env: object;
   builderState: BuilderStore;
   builderBlock: BuilderElement;
@@ -114,7 +116,7 @@ export class AmisComponent extends React.Component<PropsWithChildren<AmisProps>>
       ...this.props.env
     };
     // console.log('render amis', this.props, data, env);
-    this.amisScoped = this.amis.embed(this.ref.current, this.props.schema, {data}, env, ()=>{
+    this.amisScoped = this.amis.embed(this.ref.current, this.props.schema, { data, locale: this.props.locale || 'en-US', ...(this.props.props || {})}, env, ()=>{
       // console.log('this.amisScoped', this.amisScoped)
       Object.assign(this._scoped, this.amisScoped);
     });
