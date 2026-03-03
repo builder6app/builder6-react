@@ -14,7 +14,7 @@ import { AmisRenderer } from './AmisRenderer';
 
 interface AmisProps {
   schema: object;
-  data: object;
+  data: Record<string, any>;
   locale: String;
   props: object;
   env: object;
@@ -123,16 +123,23 @@ export class AmisComponent extends React.Component<PropsWithChildren<AmisProps>>
   }
 
   async componentDidUpdate(prevProps) {
-    // console.log('Amis componentDidUpdate', prevProps, this.props);
-    if (JSON.stringify(prevProps.schema) !== JSON.stringify(this.props.schema)) {
-      // console.log(`Amis componentDidUpdate schema`, this.props.schema);
+    if (!this.amisScoped) return;
+
+    const schemaChanged = JSON.stringify(prevProps.schema) !== JSON.stringify(this.props.schema);
+    const dataChanged = JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data);
+
+    if (schemaChanged) {
       this.amisScoped.updateSchema(this.props.schema);
     }
-    else if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
-      // console.log(`Amis componentDidUpdate data`, this.props.data);
-      this.amisScoped.updateProps({
-        data: this.props.data
-      }, () => {
+
+    if (dataChanged) {
+      const { builderState } = this.props;
+      const data = {
+        ...(builderState && builderState.state),
+        ...this.props.data,
+        _scoped: this._scoped,
+      };
+      this.amisScoped.updateProps({ data }, () => {
         /*更新回调 */
       });
     }
